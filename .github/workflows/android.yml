@@ -43,7 +43,7 @@ jobs:
         uses: actions/setup-java@v4  # Updated to v4
         with:
           distribution: temurin
-          java-version: 17
+          java-version: 21  # Changed from 17 to 21
           cache: 'gradle'  # Cache Gradle dependencies
       
       # 7. Make gradlew executable (sometimes needed)
