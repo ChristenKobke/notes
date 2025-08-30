@@ -1,6 +1,5 @@
 name: Build Android APK (Robust)
 
-
 on:
   push:
     branches: [ main ]
@@ -20,7 +19,7 @@ jobs:
         with:
           node-version: 20
 
-      # 3. Install NPM dependencies
+      # 3. Install dependencies (including dev dependencies like TypeScript)
       - name: Install dependencies
         run: npm ci
 
@@ -35,11 +34,11 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      # 6. Sync Capacitor
+      # 6. Sync Capacitor Android
       - name: Sync Capacitor Android
         run: npx cap sync android
 
-      # 7. Build APK
+      # 7. Build Android APK
       - name: Build Android APK
         run: ./gradlew assembleDebug
         working-directory: android
