@@ -1,6 +1,6 @@
 name: Build Android APK
 
-on:
+on: 
   push:
     branches: [ main ]       # triggers on pushes to main
   workflow_dispatch:          # allows manual runs
