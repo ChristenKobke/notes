@@ -1,0 +1,51 @@
+name: Build Android APK (Robust)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:  # allows manual runs
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      # 3. Install NPM dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # 4. Build Vue app
+      - name: Build Vue app
+        run: npm run build
+
+      # 5. Setup Java (OpenJDK 17)
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+
+      # 6. Sync Capacitor
+      - name: Sync Capacitor Android
+        run: npx cap sync android
+
+      # 7. Build APK
+      - name: Build Android APK
+        run: ./gradlew assembleDebug
+        working-directory: android
+
+      # 8. Upload APK artifact
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: notes-app-debug
+          path: android/app/build/outputs/apk/debug/app-debug.apk
