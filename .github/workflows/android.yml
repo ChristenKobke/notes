@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # 1. Checkout code
+      # 1. Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -19,35 +19,31 @@ jobs:
         with:
           node-version: 20
 
-      # 3. Ensure TypeScript is installed
-      - name: Install TypeScript globally in CI
-        run: npm install -g typescript
-
-      # 4. Install project dependencies (including dev dependencies)
+      # 3. Install project dependencies (including devDependencies like TypeScript)
       - name: Install dependencies
         run: npm ci
 
-      # 5. Build Vue app
+      # 4. Build the Vue app
       - name: Build Vue app
         run: npm run build
 
-      # 6. Setup Java (OpenJDK 17)
+      # 5. Setup Java (OpenJDK 17)
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
           distribution: temurin
           java-version: 17
 
-      # 7. Sync Capacitor Android
+      # 6. Sync Capacitor Android
       - name: Sync Capacitor Android
         run: npx cap sync android
 
-      # 8. Build Android APK
+      # 7. Build Android APK
       - name: Build Android APK
         run: ./gradlew assembleDebug
         working-directory: android
 
-      # 9. Upload APK artifact
+      # 8. Upload APK artifact
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
