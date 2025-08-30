@@ -2,8 +2,8 @@ name: Build Android APK
 
 on:
   push:
-    branches: [ main ]   # or whichever branch you use
-  workflow_dispatch:     # allows manual runs
+    branches: [ main ]       # triggers on pushes to main
+  workflow_dispatch:          # allows manual runs
 
 jobs:
   build:
@@ -25,11 +25,11 @@ jobs:
     - name: Build Vue app
       run: npm run build
 
-    - name: Install Java (OpenJDK)
+    - name: Set up Java (OpenJDK)
       uses: actions/setup-java@v3
       with:
-        distribution: 'temurin'
-        java-version: '17'
+        distribution: temurin
+        java-version: 17
 
     - name: Install Android SDK
       uses: reactivecircus/android-emulator-runner@v2
@@ -40,7 +40,7 @@ jobs:
         force-avd-create: true
         emulator-options: -no-window -gpu swiftshader_indirect
 
-    - name: Copy Capacitor build
+    - name: Sync Capacitor Android
       run: npx cap sync android
 
     - name: Build Android APK
@@ -48,7 +48,7 @@ jobs:
       working-directory: android
 
     - name: Upload APK
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: notes-app-debug
         path: android/app/build/outputs/apk/debug/app-debug.apk
