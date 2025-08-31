@@ -14,6 +14,7 @@ on:
         options:
         - debug
         - release
+        
 
 jobs:
   build:
